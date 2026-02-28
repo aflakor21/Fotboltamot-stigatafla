@@ -253,6 +253,10 @@ function renderSchedule() {
           return;
         }
 
+        if (parsed.pending) {
+          return;
+        }
+
         if (parsed.homeGoals === null || parsed.awayGoals === null) {
           delete competitionState.scores[match.id];
         } else {
@@ -293,7 +297,7 @@ function parseScoreInputs(homeRaw, awayRaw) {
   }
 
   if (homeTrimmed === "" || awayTrimmed === "") {
-    return { valid: false, message: "Enter both scores, or leave both blank." };
+    return { valid: true, pending: true };
   }
 
   if (!/^\d+$/.test(homeTrimmed) || !/^\d+$/.test(awayTrimmed)) {
