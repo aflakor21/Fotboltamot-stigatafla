@@ -186,6 +186,12 @@ td:first-child {
   color: var(--success);
 }
 
+.score-hint {
+  grid-column: 1 / -1;
+  font-size: 0.82rem;
+  color: #a15b00;
+}
+
 .empty-state {
   background: #f8faff;
   border: 1px dashed var(--border);

@@ -238,10 +238,21 @@ function renderSchedule() {
       const homeInput = row.querySelector(".home-goals");
       const awayInput = row.querySelector(".away-goals");
       const clearButton = row.querySelector(".clear-score");
+      const pendingHint = document.createElement("div");
+      pendingHint.className = "score-hint";
+      pendingHint.textContent = "Enter both scores to save";
+      pendingHint.hidden = true;
+      row.appendChild(pendingHint);
 
       const existingScore = competitionState.scores[match.id];
       homeInput.value = existingScore ? String(existingScore.homeGoals) : "";
       awayInput.value = existingScore ? String(existingScore.awayGoals) : "";
+
+      const updateHint = () => {
+        const homeHasValue = homeInput.value.trim() !== "";
+        const awayHasValue = awayInput.value.trim() !== "";
+        pendingHint.hidden = !(homeHasValue !== awayHasValue);
+      };
 
       const saveHandler = () => {
         const parsed = parseScoreInputs(homeInput.value, awayInput.value);
@@ -250,10 +261,12 @@ function renderSchedule() {
           const previous = competitionState.scores[match.id];
           homeInput.value = previous ? String(previous.homeGoals) : "";
           awayInput.value = previous ? String(previous.awayGoals) : "";
+          updateHint();
           return;
         }
 
         if (parsed.pending) {
+          updateHint();
           return;
         }
 
@@ -266,17 +279,30 @@ function renderSchedule() {
           };
         }
 
+        updateHint();
         persistState();
         renderStandings();
       };
 
+      const handleEnter = (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          event.currentTarget.blur();
+        }
+      };
+
+      homeInput.addEventListener("input", updateHint);
+      awayInput.addEventListener("input", updateHint);
       homeInput.addEventListener("change", saveHandler);
       awayInput.addEventListener("change", saveHandler);
+      homeInput.addEventListener("keydown", handleEnter);
+      awayInput.addEventListener("keydown", handleEnter);
 
       clearButton.addEventListener("click", () => {
         delete competitionState.scores[match.id];
         homeInput.value = "";
         awayInput.value = "";
+        updateHint();
         persistState();
         renderStandings();
       });
