@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>School Football Competition Planner</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="page-header card">
+        <div>
+          <h1>School Football Competition Planner</h1>
+          <p>Plan matches, enter scores, and track live standings for Boys and Girls tournaments.</p>
+        </div>
+        <div id="saveStatus" class="save-status" aria-live="polite">Not saved yet</div>
+      </header>
+
+      <main class="layout">
+        <section class="main-content">
+          <div class="tabs card" role="tablist" aria-label="Competition switcher">
+            <button class="tab is-active" data-competition="boys" role="tab" aria-selected="true">Boys</button>
+            <button class="tab" data-competition="girls" role="tab" aria-selected="false">Girls</button>
+          </div>
+
+          <section class="card">
+            <h2 id="scheduleTitle">Boys Schedule</h2>
+            <div id="scheduleContainer"></div>
+          </section>
+
+          <section class="card">
+            <h2 id="standingsTitle">Boys Standings</h2>
+            <div class="table-wrap">
+              <table id="standingsTable">
+                <thead>
+                  <tr>
+                    <th>Team</th>
+                    <th>P</th>
+                    <th>W</th>
+                    <th>D</th>
+                    <th>L</th>
+                    <th>GF</th>
+                    <th>GA</th>
+                    <th>GD</th>
+                    <th>Pts</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <aside class="card admin-panel">
+          <h2>Admin / Settings</h2>
+          <p>Edit schools (one per line). Applying changes or regenerating schedule may reset scores.</p>
+          <label for="schoolsInput">Schools list</label>
+          <textarea id="schoolsInput" rows="12"></textarea>
+          <div class="admin-actions">
+            <button id="applyChangesBtn" class="btn primary">Apply changes</button>
+            <button id="regenerateBtn" class="btn">Regenerate schedule</button>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <template id="matchTemplate">
+      <div class="match-row">
+        <div class="teams"></div>
+        <div class="score-inputs">
+          <input type="number" min="0" step="1" class="goal-input home-goals" placeholder="-" />
+          <span>:</span>
+          <input type="number" min="0" step="1" class="goal-input away-goals" placeholder="-" />
+        </div>
+        <button class="btn clear-score">Clear score</button>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
